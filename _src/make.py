@@ -25,6 +25,7 @@ def handle_article(a):
 	row = {
 		'title': id,
 		'ref': '',
+		'ref_url': '',
 		'short': '',
 		'long': '',
 	}
@@ -32,7 +33,8 @@ def handle_article(a):
 		if e.tag == 'h1':
 			row['title'] = e.text.strip()
 		elif e.tag == 'ref':
-			row['ref'] = e.attrib['to'].strip()
+			row['ref'] = e.text
+			row['ref_url'] = e.attrib['to'].strip()
 			e.tag = 'a'
 			e.attrib['href'] = '/online/lg' + e.attrib['to']
 			e.attrib.pop('to')
@@ -42,7 +44,7 @@ def handle_article(a):
 			row['short'] += etree.tostring(e, pretty_print=True, encoding='UTF-8', method='html').decode(encoding='UTF-8')
 		elif e.tag == 'expand':
 			row['long'] += re.sub(r'</?expand>\n*', '', etree.tostring(e, pretty_print=True, encoding='UTF-8', method='html').decode(encoding='UTF-8'))
-	db.execute("INSERT INTO articles (a_title, a_ref, a_short, a_long) VALUES (:title, :ref, :short, :long)", row)
+	db.execute("INSERT INTO articles (a_title, a_ref, a_ref_url, a_short, a_long) VALUES (:title, :ref, :ref_url, :short, :long)", row)
 	return db.lastrowid
 
 def handle_chapter(ch):

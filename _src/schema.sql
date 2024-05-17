@@ -14,6 +14,7 @@ CREATE TABLE articles (
 	a_id INTEGER NOT NULL,
 	a_title TEXT NOT NULL,
 	a_ref TEXT NOT NULL,
+	a_ref_url TEXT NOT NULL,
 	a_short TEXT NOT NULL,
 	a_long TEXT NOT NULL,
 
