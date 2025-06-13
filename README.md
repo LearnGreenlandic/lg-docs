@@ -14,3 +14,27 @@ Eksempel (med et custom `expand`-tag til formålet):
 Linking fra LG til docs er: `<a class="tip">Trm</a>` eller `<a class="tip" data-which="Trm">Terminalis</a>`
 
 Alle sprog skal have samme ID'er. Så kan de bruges til at påpege hvor en oversættelse mangler. Men, i et enkelt sprog skal ID'er være unikke. Så det er fint at `dan` og `eng` begge har `Trm`, men `dan` må ikke have to `Trm`.
+
+## Conversions patterns
+```
+([^\t]+?)\t([^\t]+?)\t([^\t]+?)[\s\n]
+<article id="$1">\n<h1>$1</h1>\n<ref to="$3">$3</ref>\n<p>$2</p>\n</article>\n\n
+
+<h1>(\w+)
+<h1><i>$1</i>
+
+ id="([\p{L}\d]+)[^"]*"
+ id="$1"
+
+to="TikaVelkomst"
+to="1/#tika"
+
+TikaVelkomst
+Tikas velkomst
+
+ to="(\d)-(\d)X"
+ to="$1/#l$2x"
+
+ to="(\d)-(\d)"
+ to="$1/#l$2"
+```
