@@ -31,7 +31,7 @@ def handle_article(a):
 	}
 	for e in a:
 		if e.tag == 'h1':
-			row['title'] = e.text.strip()
+			row['title'] = etree.tostring(e, encoding='UTF-8', method='text').strip()
 		elif e.tag == 'ref':
 			row['ref'] = e.text
 			row['ref_url'] = e.attrib['to'].strip()
@@ -41,9 +41,9 @@ def handle_article(a):
 			if e.attrib['href'].endswith('#'):
 				e.attrib['href'] += id.lower()
 		elif e.tag == 'p':
-			row['short'] += etree.tostring(e, pretty_print=True, encoding='UTF-8', method='html').decode(encoding='UTF-8')
+			row['short'] += etree.tostring(e, encoding='UTF-8', method='html').decode(encoding='UTF-8')
 		elif e.tag == 'expand':
-			row['long'] += re.sub(r'</?expand>\n*', '', etree.tostring(e, pretty_print=True, encoding='UTF-8', method='html').decode(encoding='UTF-8'))
+			row['long'] += re.sub(r'</?expand>\n*', '', etree.tostring(e, encoding='UTF-8', method='html').decode(encoding='UTF-8'))
 	db.execute("INSERT INTO articles (a_title, a_ref, a_ref_url, a_short, a_long) VALUES (:title, :ref, :ref_url, :short, :long)", row)
 	return db.lastrowid
 
@@ -81,7 +81,7 @@ def handle_chapter(ch):
 				als = (e.attrib['id'] + ' ' + e.get('alias', default='')).strip().split(' ')
 				for a in als:
 					db.execute(f"INSERT INTO lookups (l_id, l_{lang}) VALUES (?, ?) ON CONFLICT DO UPDATE SET l_{lang} = ?", [a, id, id])
-			html += re.sub(r'</?expand>\n*', '', etree.tostring(e, pretty_print=True, encoding='UTF-8', method='html').decode(encoding='UTF-8'))
+			html += re.sub(r'</?expand>\n*', '', etree.tostring(e, encoding='UTF-8', method='html').decode(encoding='UTF-8'))
 		html += '''</body>
 </html>
 '''
