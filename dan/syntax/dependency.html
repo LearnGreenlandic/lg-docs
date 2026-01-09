@@ -1,0 +1,73 @@
+<article id="dependency">
+<h1>Dependenser og syntagmer</h1>
+
+<p>Nogle ord hører mere sammen indbyrdes, end de gør med resten af ordene i sætningen.</p>
+
+<p>EX Det hvide hus ligger ved siden af en stor vej.</p>
+
+<p>'hvid' hører kun gennem en masse andre ord sammen med 'vej', mens det direkte hører sammen med 'hus''.</p>
+
+<p>Der er tre store klumper ord i sætningen:</p>
+
+<p>'det hvide hus'</p>
+
+<p>'ligger'</p>
+
+<p>'ved siden af en stor vej'</p>
+
+<p>Disse ordklumper udgør syntagmer. Der er ligesom tale om kinesiske æskesystemer i syntagmer. Et syntagme kan minimum bestå af et ord, som så sammen med et andet eller andre ord kan danne et større samlet syntagme, som så sammen med andre syntagmer danner en hel sætning.</p>
+
+<p>Relationerne mellem syntagmer kan være fire forskellige slags:</p>
+
+<p><u>Paratakse</u> (sideordning) der dermed danner et paratagme. Et sideordnet led kan udelades - men resten af den syntaktiske funktion klares stadig ved det tilbageblevne. .</p>
+
+<p><u>Hypotakse</u> (over-underordning) som dermed danner et hypotagme. Et underordnet led kan udelades uden, at resten af sætningen påvirkes (i langt de fleste tilfælde).</p>
+
+<p>Et underordnet led er et adled til sit overordnede led, som står som kerne i forhold til sit underordende led.</p>
+
+<p>Et led kan i en kontekst selv være kerne i forhold til et underordnet led, samtidigt med at det selv står som adled til, hvad der er kerne i forhold til det selv.</p>
+
+<p><u>Katatakse</u> ("gensidig forudsættelse") som dermed danner et katatagme. Ingen af delene kan udelades.</p>
+
+<p>Og endelig <u>jukstaposition</u>, som dækker nogle løsere tilknytninger, som altid kan udelades.</p>
+
+<p>Når der ovenfor tales om, hvorvidt noget kan udelades, så betyder det, at den grammatiske opbygning ikke ændres, men selvfølgelig betyder enhver udeladelse tab af information.</p>
+
+<p>Omvendt hvis det underordnede i et hypotagme udelades (ikke blot underforstås), så kan det ikke genskabes ud fra resten af sætningen.</p>
+
+<p></p>
+
+<p>På grønlandsk består paratagmer af to elementer som sideordnes med en sideordnende <i>konjunktion</i> (især: aamma, kisianni, imaluunniit - og de enklitiske -LU, -LI, -LUUNNIIT) - eller flere elementer som så typisk står som en opremsning og kun har sideordnende konjuktion mellem de to sidste elementer. Bortset fra, at det sideordnende element kan være enklitisk, så er strukturerne som på sprog som dansk og engelsk.</p>
+
+<p>-LU på grønlandsk fungerer som latins enklitiske -que .</p>
+
+<p>Hypotagmer på grønlandsk er adverbale adled og det tilhørende overordnede verballed eller adnominale adled og den tilhørende nominale kerne.</p>
+
+<p>Katatagmer består på grønlandsk af relationen mellem et verballed og dets tilhørende subjekt og mellem et verballed i transitiv verbalform og dets tilhørende objekt.</p>
+
+<p>Jukstaposition er dels løsere tilknyttede afterthoughts - dels appositioner (som typisk består af et navn og en titel af en art).</p>
+
+<p>Den regeldrevne sprogteknologi for grønlandsk, den grønlandske parser, bygger på dependensgrammatik i form af Constraint Grammar og har derfor en lidt anden skæring af sætningerne - alt ses grundlæggende som over-underordning altså hypotakse, og hvad der udgør syntagmer ses udelukkende gennem at følge de hypotaktiske relationer. Dvs der opereres ikke katatakse, ej heller med jukstaposition. Hypotaktiske relationer beskrives som dependenser - og det mest overordnede element i en neksus er verballeddet.</p>
+
+<p>Katatakser mellem subjekt - verballed og mellem verballed - objekt ses som to forskellige slags dependenser nemlig gennem dels taggen @SUBJ dels taggen @OBJ for henholdsvis den syntaktiske funktion subjekt og den syntaktiske funktion objekt, eller rettere den nominale kerne i hver af de to syntaktiske funktioner.</p>
+
+<p>Paratakse udtrykkes ved, at de sideordnede led er dependenser til samme overordnede ord, det såkaldte head - og de får så i øvrigt samme tag for syntaktisk funktion, da det jo er tilfældet, at de har samme relation til deres head.</p>
+
+<p>To eller flere sideordnede led underordnet en enkelt kerne er ikke et problem - der er ingen tvetydigheder.</p>
+
+<p>Derimod har systemet en kæmpe svaghed, når strukturen er den, at et underodnet led står underordnet, er dependent, til flere indbyrdes sideordnede kerner, fordi systemet er lavet sådan, at hvert ord kun kan indgå i én dependensrelation. I det tilfælde har vi i analysen af grønlandsk valgt, at så må et underordnet led, der kommer efter flere kerner, blive dependent til den sidste, også selv om det nogle gange giver numerus-problemer. Herom mere detaljeret ved gennemgang af nominalsyntagmestrukturen.</p>
+
+<p>Appositioner ses som en slags særlig adnominalt adled til en nominal kerne - typisk et substantiv til en andet og mest frekvent om forholdet mellem et navn, proprium, og en jobbetegnelse.</p>
+
+<p>Da der ordklassemæssigt ikke er baggrund for at skelne mellem substantiver og adjektiver på grønlandsk, kan man vælge, at der i alle tilfælde er tale om et nominalt adled i kasus og numerus kongruens med den forudgående kerne.</p>
+
+<p>Vi har valgt i analysen af grønlandsk udelukkende at bruge apposition om kernen i et navn, typisk efternavn, der står efter et nomen, der typisk er en jobbetegnelse . Et proprium i den struktur får taggen @&lt;APPOS. Se mere detaljeret udredning under @&lt;APPOS.</p>
+
+<p>I dependensgrammatikken og Constraint Grammar får man altså "stamtræer" af dependenserne som en til en samles og ender med allerøverst et hovedverballed som er det allermest overordnede element i sætningen.
+(NB ang billedet med træstruktur: træet står på hovedet for at være i overensstemmelse med ideen om under- versus overordnet)</p>
+
+<p>For elementer, der står sideordnede og altså har et fælles overordnet element i sætningen, gælder, at der ofte i den lineære rækkefølge kan være indbygget en tidsfølge eller logisk følge. Elementerne kan sjældent frit byttes om. Det gælder vist alle sprog: "Jeg vågnede og spiste morgenmad" er ikke det samme som "Jeg spiste morgenmad og vågnede".</p>
+
+<p>Se endvidere om strukturerne i <i>nominalsyntagmer</i> og <i>verbalsyntagmer</i></p>
+
+</article>

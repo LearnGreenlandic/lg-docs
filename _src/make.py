@@ -6,6 +6,7 @@ import regex as re
 import subprocess
 import hashlib
 from pathlib import Path
+import shutil
 import sqlite3
 from lxml import etree
 
@@ -14,6 +15,7 @@ os.chdir(dir)
 
 subprocess.run(['rm', '-rf', 'build'])
 os.makedirs('build')
+shutil.copy(dir+'/_src/.htaccess', 'build/.htaccess')
 subprocess.run(['sqlite3', 'build/docs.sqlite', '-init', '_src/schema.sql'], input='')
 
 con = sqlite3.connect('build/docs.sqlite')

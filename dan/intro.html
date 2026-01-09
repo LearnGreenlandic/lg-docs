@@ -1,0 +1,186 @@
+<chapter name="intro">
+<h1>Introduktion</h1>
+<h2>- til nogle basale sætningselementer og betegnelserne for dem</h2>
+
+<p>Det følgende er tænkt som en hjælp til at forstå grammatiske regler ved at gå ud fra dansk/engelsk som det velkendte - og samtidigt også en første præsentation af, at grønlandsk på visse punkter adskiller sig i sine strukturer fra dansk/engelsk. En første indføring i strukturligheder og forskelle mellem sprogene - en typologisk sammenligning.</p>
+
+<h3>Ingen regel om sprogstruktuerer uden undtagelse</h3>
+<p>En helt og aldeles grundlæggende observation er, at når man analyserer menneskers sprog, er det fantastisk så mange regelmæssige strukturer, man kan observere - strukturer, som sprogbrugerne bruger uden på nogen måde at være sig bevidste om dem. Sprog er imponerede regelrette.</p>
+
+<p>Men når det er sagt, så er det lige så vigtigt at gøre sig klart, at ethvert sprog også er fyldt med undtagelser fra de regler, man kan opstille om strukturer i sproget.</p>
+
+<p>Regler og kategorier er altid udtryk for en prototypisk tilstand for de mest højfrekvente strukturer, men de ledsages af nogle eksempler, som kan ligge nærmere eller fjernere fra det prototypiske. Og der vil tit være gråzoner.</p>
+
+<h3>Forskellen på krav til grammatiske regler</h3>
+<p>De grammatiske regler, som skal bruges direkte af mennesker og så de grammatiske regler, som en maskinanalysator i et computerprogram - en parser - skal bruge adskiller sig en hel del. Mennesker vil have viden om verden og om hvad der plejer at høre sammen. Den viden har en parser ikke. For at få parseren til at virke kan der så tilføjes visse betydningskategorier, semantiske oplysninger, som så også kan indgå i analysen. Men generelt set skal der ekstremt specifikke oplysninger til, for at en maskinanalyse ender med det rigtige resultat. Et menneske kan komme meget langt med langt mindre udspecificerede regler.</p>
+
+<p>Netop de krav som parseren stiller gør også at blot en lille trykfejl kan vælte hele analysen af en sætning, i modsætning til et menneske som i mange tilfælde læser hen over trykfejlen.</p>
+
+<h3>Fonetik og fonologi</h3>
+<p>Sprog er basalt en samlig lyde, nemlig som talt sprog. Og det er langt fra alle sprog som har et skriftsprog. Talt sprog består af lyd, og sprogs lyde behandles i fonetik og fonologi.</p>
+
+<h3>Morfologi: Ords interne struktur - composita eller stamme+derivation med fleksion tilføjet</h3>
+<p>De fleste ord har en indre opbygning.</p>
+
+<p>De kan være sammensætninger (composita) som fx skoletaske (skole + taske) hvor to rødder sættes sammen til et ord.</p>
+
+<p>De kan også være dannet ved afledning (derivation) som fx hørelse (høre  + else), hvor -else ikke i sig selv er et ord, det kan kun bruges som en orddel til ud fra en rod eller stamme at danne en ny stamme.</p>
+<p>I mange tilfælde er ord bøjede, dvs de får bøjningsendelser i slutningen af ordet (fleksion).</p>
+
+<p>I de fleste tilfælde betyder rækkefølgen af ord noget for en udtalelses / sætnings betydning. Jens slog Jørgen betyder ikke det samme som Jørgen slog Jens.</p>
+
+<p>Dansk / engelsk er sprog med få derivationer og rigtig megen brug af composita.</p>
+
+<p>Grønlandsk er et sprog, der basalt ikke har composita, men til gengæld har rigtig meget derivation.</p>
+
+<p>Dansk / engelsk har noget fleksion. Grønlandsk har meget fleksion.</p>
+
+<p>Dansk / engelsk er meget afhængig af rækkefølgen (linear order). Det er grønlandsk også, men i mindre grad på grund af fleksionsmængden, som i rigtig mange tilfælde kan sørge for, at sætningen bliver entydig.</p>
+<p>De enkelte dele af ord (morfemer) og hvordan de sættes sammen til ord beskrives i morfologien.</p>
+
+<p>I den grønlandske parser er det den del, som benævnes <b>fst</b>, som giver de mulige morfologiske analyser af de enkelte ord uden tanke på konteksten, de indgår i.</p>
+
+<p>Det er et vigtigt typologisk træk ved grønlandsk, at sproget har rigtig meget derivation i form af rigtig mange tilhæng (affikser), som sættes bag på rod / stamme. Og idet de ikke sættes ind i rod (infiks) eller foran roden
+(præfiks), så er det den slags affikser som benævnes suffikser. Et ords rod består af den mindste del ordet, der kan bruges eventuelt med fleksion tilføjet. Til en rod kan tilføjes et eller flere suffikser og dermed danne en ny stamme for hvert nyt suffiks tilføjet.</p>
+
+<p>De grønlandsk suffikser kan inddeles i 4 forskellige typer  alt efter om stammen er nominal eller verbal og efter om suffikset fortsætter samme ordklasse eller ændrer ordklasse:</p>
+
+<p>EX panik (datter) + NNGUAQ (suffiks: 'lille') -&gt; paninnguaq (lille datter)</p>
+
+<p>dvs samme ordklasse bibeholdes - og suffikset tagges Der/nn --- 'Der' for derivation, 'nn' for at suffikset danner et nomen og gør det ud fra en nominal rod eller stamme.</p>
+
+<p>EX ikior- (hjælpe) + NNGIT (suffiks for nægtelse = 'ikke') -&gt; ikiunngilaa (hjælper ikke)</p>
+
+<p>dvs samme ordklasse bibeholdes - og suffikset tagges Der/vv - 'vv' for at vise, at suffikset danner en verbalform ud fra en verbal rod eller en verbalstamme.</p>
+
+<p>EX panik (datter) + NNGUAQ -&gt; paninnguaq: paninnguaq (lille datter) + QAR (have) -&gt; paninnguaqarpoq - har en lille datter - dvs der med QAR skiftes ordklasse og QAR tagges Der/nv - 'nv' for at vise, at stammen er nominal og der med tilføjelse af suffikset QAR dannes en verbalstamme</p>
+
+<p>EX ikior- (at hjælpe)  + TE 'en som _' -&gt; ikiorti ('en hjælper') - dvs der med TE skiftes ordklasse og TE tagges Der/vn - vn for at vise, at roden ikior- er verbal og der med tilføjelse af suffikset TE dannes en nominalstamme., der sker en nominalisering.</p>
+
+<h3>Ordklassetilhør</h3>
+<p>Ud fra ords fleksion og deres anvendelse i sammenhæng med andre, kan ord inddeles i typer af ord, nemlig i hovedordklasser som så igen inddeles i ordklasser. Hovedordklasserne er  nominer, verber og partikler.</p>
+
+<p>Prototypen på et nomen er et navneord, som betegner en fysisk genstand som fx et hus. Men nominer dækker også abstrakte begreber med meget mere. Under nominer hører også talord (numeralier), egenavne (proprier), pronominer (stedord).</p>
+
+<p>Prototypen på et verbum er et udsagnsord, som betegner 'at gøre noget' eller
+'at være noget'. Ud fra fleksionen er der på grønlandsk to hovedgrupper af verbalformer: de transitive og de intransitive - se nedenfor om transitivitet.</p>
+
+<p>Prototypen på en partikel er et småord som ikke bøjes, fx 'omsider', 'hej',
+'fordi', 'til' etc.</p>
+
+<p>Se yderligere fil om ordklasser</p>
+
+<h3>Disambiguering</h3>
+<p>I parserens disambiguator vælges blandt de mulige morfologiske analyser den korrekte morfologiske analyse af et ord ud fra den givne kontekst.</p>
+
+<p>På dansk / engelsk er der tilfælde, hvor det må udredes, diasambigueres, hvilket ord i hvilken form det er som står i en bestemt kontekst.</p>
+
+<p>For at tage et konstrueret EX på dansk, men forståeligt:</p>
+
+<p><i>Idag får<sub>1</sub> han sit første får<sub>2</sub> og han får<sub>3</sub> købt flere får<sub>4</sub>, når han får<sub>5</sub> råd.</i></p>
+
+<p>Der er fem 'får' i EX, de tre er en form af verbet 'at få' - de sidste to former af nominet dyret 'et får'.</p>
+<p>'får<sub>2</sub>' er ét får, navneordet, substantivet, er ental, singularis. Men 'får' er et af de ret få substantiver på dansk, som har samme form i singularis og flertal, pluralis - og 'får<sub>4</sub>' er pluralis form. Og det kan man få en parser til at skelne i mellem ved at bruge ordene i konteksten - at 'får<sub>2</sub>' er singularis kan man se på ordet 'sit', for det kan kun bruges om en singularis form, mens 'flere' ved 'får<sub>4</sub>' entydigt viser ,at der er tale om pluralis formen.</p>
+
+<p>'at få' kan bruges på mange måder på dansk. 'får<sub>1</sub>' er synonymt med at 'modtage', 'får<sub>3</sub>' drejer sig om at vise at handlingen bliver gennemført, og 'får<sub>5</sub>' danner sammen med ordet 'råd' et fast udtryk. Igen disambigureres der ud fra konteksten, og i parseren kan man lave regler om, at hvis 'at få' efterfølges af, hvad der modtages, så er det forskelligt fra, hvis der kommer en form som købt, og det er igen forskelligt fra faste udtryk, som kan skrives ind i regler i parseren.</p>
+
+<p>På grønlandsk er der langt flere tvetydige (ambiguøse) former, som skal udredes (disambigueres) - det sker i den grønlandske parsers disambiguator, men processen er den samme som her skitseret.</p>
+
+<p>De disambiguerede former er former med entydigt angivet fleksion og morfologisk analyse - og dermed ordklassetilhør.</p>
+
+<p>Disambigueringen sker gennem regler i den grønlandske parsers <b>Disambiguator</b>, som dermed giver et resultat, som kan bruges i regler til den syntaktiske analyse, men egentlig bygger reglerne i disambigueringen på en syntaktisk analyse af teksten, som i første omgang, nemlig i disambiguator blot bruges til at bestemme den i konteksten korrekte morfologiske analyse incl fleksionen.</p>
+
+<h3>Syntaks</h3>
+<p>Syntaktisk analyse er en analyse af de enkelte sætningers opbygning. Det drejer sig om at analysere, hvilke led der indgår i sætningen. Se på, hvordan et led internt er opbygget, hvis det består af flere ord. Se på, hvordan leddene står i forhold til hinanden. I analysen ingår ordenes ordklassetilhør og fleksion og i hvilken rækkefølge leddene kommer.</p>
+
+<p>Den grønlandske parser leverer først en syntaktisk analyse, gennem sin regelsamling om syntaktisk funktion (<b>Functions</b>). Dernæst tydeliggør parseren analysen ved at angive præcist, hvilken anden del af sætningen et givet ord står underordnet under, dvs står som dependent til - det sker i den grønlandske parsers præciserende analyselag (<b>Dependency</b>).</p>
+
+<h3>Neksus</h3>
+<p>I enhver prototypisk og afsluttet sætning optræder minimum et grundled (subjekt) og et verballed (udsagnsled). Hver gang vi har et verballed med et tilhørende subjekt har vi en neksus.</p>
+
+<p>EX Pigen synger</p>
+
+<p>'synger' er verballeddet, som angiver den handling der foregår</p>
+
+<p>'pigen' er subjektet, som gør det, som verballeddet angiver</p>
+
+<p>Følgende EX indeholder ikke blot et verballed og et subjekt, men også et objekt/genstandsled:</p>
+
+<p>EX Pigen hjælper læreren</p>
+
+<p>'hjælper' er verballeddet</p>
+
+<p>'pigen' er subjektet</p>
+
+<p>'læreren' er objekt</p>
+
+<p>Når man analyserer dansk, skal man først finde verballeddet, og kan derefter spørge 'hvem eller hvad synger?' og vil så finde svaret 'pigen' og i sætningen med objekt, skal man først finde verballeddet, og kan derefter spørge 'hvem eller hvad hjælper?' og vil så finde svaret 'pigen', og man skal så spørge videre: 'hvem eller hvad er det, som pigen hjælper?' og vil så finde objektet nemlig 'læreren'.</p>
+
+<p>Ud over subjekt, objekt og verballed, skal et yderligere led omtales: subjektsprædikativ. Et subjektsprædikativ skal holdes adskilt fra et objekt. Et subjektsprædikativ findes ved verber som 'være' og
+'blive' (der er flere på dansk). EX Hun er lærer - 'lærer' er subjektsprædikativ. Konstruktionen på grønlandsk er anderledes, men det er nødvendigt at kende til subjektsprædikativ.</p>
+
+<p>Hver gang en tekst har et verballed med tilhørende subjekt har den en neksus - uanset om der er plads til objekt.</p>
+
+<p>Se yderligere filen Neksus</p>
+
+<h3>Transitivitet</h3>
+<p>Forskellen mellem en neksus, hvor der er plads til et objekt, og en neksus, hvor der ikke er plads til et objekt, består i transitivitet, der drejer sig om et givent verbum er transitivt eller ej.</p>
+
+<p>En neksus med plads til objekt er transitiv, idet verballeddet er et verbum, der er transitivt.</p>
+
+<p>En neksus uden plads til objekt er intransitiv, idet verballeddet er et verbum, der er intransitivt.</p>
+
+<p>På dansk/engelsk kan man ikke se forskel på transitive og intransitive verber ud fra deres form, man kan kun se forskel ud fra hvilke sætningsstrukturer, de indgår i. På grønlandsk derimod er der to helt forskellige bøjningsskemaer, fleksionsparadigmer - et fleksionsparadigme for intransitive verbalformer og et fleksionsparadigme for transitive verbalformer.</p>
+
+<p>Se ydermere fil transitivitet og fil om halvtransitiv</p>
+
+<h3>Hovedneksus versus underordnet neksus.</h3>
+<p>En neksus kan stå som den mest overordnede og kan dermed benævnes hovedneksus. Derudover kan neksusser stå underordnet - typisk som underordnet et verballed i en overordnet neksus. Et underordnet led kan benævnes adled og når det til et ord som er et verbalform, så taler man om et adverbalt adled. Så en neksus kan stå som adverbalt adled til verballeddet i en overordnet neksus.</p>
+
+<p>Indirekte gengivelse af tale og tanke (oratio obliqua) kan også i visse tilfælde stå på objektspladsen for det anførende verballed, hvis dette er transitivt, eller på subjektspladsen for et passivt anførende verballed.</p>
+
+<h3>Kerne versus adled</h3>
+<p>I en neksus er der subjektsled (og objektsled) og verballed. Hver af disse led kan bestå af ét eller flere ord. Kernen er det ord, som står tilbage, når man stryger så meget som muligt (dog eventuelt med lidt ændringer i fleksionen).</p>
+
+<p>Kernen i et subjektsled og i et objektsled er nominal - dvs består af et nomen (navneord, stedord, talord).</p>
+
+<p>Kernen i et verballed er verbal - dvs består af en verbalform. Til kernen kan der stå underordnet nogle yderlige ord, som nærmere beskriver kernen.</p>
+
+<p>EX Den grønlandske pige hjælper den gamle lærer. ("den" er en slags fleksion på dansk)</p>
+
+<p>I subjektet står "grønlandske" som adled til "pige", "pige" er nominalt,
+"grønlandske" står som adnominalt adled til "pige", som står som kerne i subjektet.</p>
+
+<p>Tilsvarende er "gamle" adnominalt adled til "lærer", som er kernen i objektet.</p>
+
+<p>EX Den grønlandske pige hjælper i skolen den gamle lærer</p>
+
+<p>Verballed har i de fleste neksusser mange adled, og de er adverbale. Egentlig skulle man tale om verbalformen som verballeddets kerne. Men det er normalt at underforstå kerne og blot at tale om verballeddet, hvortil så står underordnet adverbale adled. "i skolen" står således som adverbalt adled til hjælper.</p>
+<p>Se fil om syntagmer</p>
+
+<h3>Tags</h3>
+<p>Et tag er en betegnelse, som hæftes på de enkelte ord og deres enkelte dele (morfemer), for at parserens regler kan blive så almene som muligt, dvs så en regel kan bruges om mange forskellige sætninger, forudsat at dele i dem er tagget, som reglen kræver. Og det gælder ikke mindst på det syntaktiske plan.</p>
+
+<p>En syntaktisk regel er en regel, som er lavet ud fra indsigten i, at der er strukturelle mønstre, som går igen i et givent sprog, og de udtryk, der bruges om disse genkomne mønstre, er udtryk som gennem generatoner er opbygget til at analysere de forskellige sprog i verden. De forskellige sprog er forbøffende ensdannede, men ikke helt ens, derfor skal der noget specielt til i analysen af et givent sprog. Mange syntaktiske udtryk har deres rod i analyse af latin og oldgræsk og videreudviklet til at klare indoeuropæiske sprog. Og da sprog trods alt er forskellig i type - der er typologiske forskelle imellem dem - så kræver inuitsprogene i visse henseende udvidelse af syntaktiske betegnelser.</p>
+
+<p>Tags for syntaktisk funktion starter alle med @.</p>
+
+<p>Og dependenserne angives ved, at det pågældende ord får et nummer for placering i sætningen og det tal efterfølges så  af en pil -&gt; og derpå af nummeret, tallet, på det direkte overordnede ord. Systemet er bygget til kun at pege på ét ord af gangen.</p>
+
+<p>Langt de fleste tags i den grønlandske parser er alment brugte tags, men der er enkelte, som er indført for at kunne beskrive visse strukturer i grønlandsk; det drejer sig især om at beskrive adled i forbindelse med den såkaldte inderivation.</p>
+
+<h3>Inderivation</h3>
+<p>Det normale for sprogs syntaks er, at syntaksen drejer sig om relationer mellem ordene i en sætning og om rækkefølgen af ordene. Det gælder også for grønlandsk syntaks.</p>
+
+<p>Men i grønlandsk syntaks er der et lag mere, som udnytter det typologiske træk ved grønlandsk, at sproget har sine mange suffikser.</p>
+
+<p>Langt de fleste tilfælde, hvor det er nødvendigt at tale om inderivation, drejer sig som adverbale adled som ikke går på hele nominet, der følger efter, men kun på verbalstammen inde i nominet:</p>
+
+<p>EX Imaq (hav) + fleksion vialis ('gennem') angala- bevæge sig + NIQ (det at _) -&gt; Immakkut angalaneq (rejse på havet), hvor immakkut er adverbalt adled til den inderiverede verbalstamme angala-. Adleddet har i sin tag et 'i-' som betegner, at der er tale om adled til en inderiveret stamme - her en verbal stamme.</p>
+
+<p>EX pikorissumik  (dygtig) paninnguaqarpoq (har lille datter) dvs har en dygtig lille datter -
+'dygtig' går ikke på hele ordet paninnguaqarpoq - kun på nominalstammen paninnguaq- . Også i dette tilfælde bruges en tag med 'i-' til at vise, at der er tale om adled til en inderiveret stamme - her en nominal stamme.</p>
+
+<p>Dette er kun ment som et lille kig ind i en for dansk/ensgelsksprogede forunderlig sproglig verden. Den fulde indsigt i inderivation må vente til, at mange andre brikker er præsenteret og sat på plads.</p>
+
+</chapter>

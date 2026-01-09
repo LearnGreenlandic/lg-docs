@@ -23,7 +23,7 @@ Alle sprog skal have samme ID'er. Så kan de bruges til at påpege hvor en overs
 <h1>(\w+)
 <h1><i>$1</i>
 
- id="([\p{L}\d]+)[^"]*"
+ id="([\p{L} \d]+)[^"]*"
  id="$1"
 
 to="TikaVelkomst"
