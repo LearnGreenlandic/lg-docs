@@ -1,3 +1,6 @@
+# LG Docs
+
+## Copy from emails
 Der er ikke noget der hedder mindre tekst. Du kan kun få større tekst, og det er kun headlines og warnings og lignende der skal være større. Brødtekststørrelse er ikke noget man må røre ved normalt, fordi det fungerer dårligt på mobile/handikap-platforme. Man skal bruge andre metoder til at fremhæve/nedtone tekst.
 
 Eksempel (med et custom `expand`-tag til formålet):

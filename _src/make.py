@@ -1,6 +1,6 @@
 #!/usr/bin/env python3
+import copy
 import glob
-import sys
 import os
 import regex as re
 import subprocess
@@ -33,7 +33,11 @@ def handle_article(a):
 	}
 	for e in a:
 		if e.tag == 'h1':
-			row['title'] = etree.tostring(e, encoding='UTF-8', method='text').strip()
+			pe = copy.deepcopy(e)
+			fns = pe.findall('lg-fn')
+			for fn in fns:
+				pe.remove(fn)
+			row['title'] = etree.tostring(pe, encoding='UTF-8', method='text').strip()
 		elif e.tag == 'ref':
 			row['ref'] = e.text
 			row['ref_url'] = e.attrib['to'].strip()
@@ -105,6 +109,12 @@ for lang in ['dan', 'eng', 'kal']:
 			for file in files:
 				inc += Path(file).read_text()
 			html = html.replace(m[0], inc)
+
+	fns = re.findall(r'<lg-fn-def n="([^"]+)">(.*?)</lg-fn-def>', html)
+	for fn in fns:
+		h = hashlib.sha256(bytes(fn[1], 'UTF-8')).hexdigest()[0:8]
+		html = re.sub(f'<lg-fn>{fn[0]}</lg-fn>', f'<lg-fn>{h}</lg-fn>', html, 1)
+		html = re.sub(f'<lg-fn-def n="{fn[0]}">', f'<lg-fn-def n="{h}">', html, 1)
 
 	parser = etree.HTMLParser()
 	dom = etree.fromstring(html, parser)
