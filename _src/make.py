@@ -84,8 +84,11 @@ def handle_chapter(ch):
 		for e in elems:
 			if e.tag == 'article':
 				id = handle_article(e)
-				als = (e.attrib['id'] + ' ' + e.get('alias', default='')).strip().split(' ')
+				als = (e.attrib['id'] + ';' + e.get('alias', default='')).strip().split(';')
 				for a in als:
+					a = a.strip()
+					if not len(a):
+						continue
 					db.execute(f"INSERT INTO lookups (l_id, l_{lang}) VALUES (?, ?) ON CONFLICT DO UPDATE SET l_{lang} = ?", [a, id, id])
 			html += re.sub(r'</?expand>\n*', '', etree.tostring(e, encoding='UTF-8', method='html').decode(encoding='UTF-8'))
 		html += '''</body>
@@ -113,8 +116,8 @@ for lang in ['dan', 'eng', 'kal']:
 	fns = re.findall(r'<lg-fn-def n="([^"]+)">(.*?)</lg-fn-def>', html)
 	for fn in fns:
 		h = hashlib.sha256(bytes(fn[1], 'UTF-8')).hexdigest()[0:8]
-		html = re.sub(f'<lg-fn>{fn[0]}</lg-fn>', f'<lg-fn>{h}</lg-fn>', html, 1)
-		html = re.sub(f'<lg-fn-def n="{fn[0]}">', f'<lg-fn-def n="{h}">', html, 1)
+		html = html.replace(f'<lg-fn>{fn[0]}</lg-fn>', f'<lg-fn>{h}</lg-fn>', 1)
+		html = html.replace(f'<lg-fn-def n="{fn[0]}">', f'<lg-fn-def n="{h}">', 1)
 
 	parser = etree.HTMLParser()
 	dom = etree.fromstring(html, parser)
