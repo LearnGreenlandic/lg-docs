@@ -5,7 +5,7 @@ cd "$DIR"
 
 ./_src/make.py
 
-grep -rl '/online/' build | xargs -n1 perl -pe 's@/online/@/online-dev/@;' -i
+grep -rl 'https://learngreenlandic.com/online/' build | xargs -n1 perl -pe 's@https://learngreenlandic.com/online/@/online-dev/@g;' -i
 
 rsync -avzHAXx --partial --inplace --delete -c build/ kal@learn.gl:public_html/online-dev/docs/
 

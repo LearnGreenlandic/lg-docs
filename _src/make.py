@@ -21,6 +21,9 @@ subprocess.run(['sqlite3', 'build/docs.sqlite', '-init', '_src/schema.sql'], inp
 con = sqlite3.connect('build/docs.sqlite')
 db = con.cursor()
 
+def to_html(e):
+	return etree.tostring(e, encoding='UTF-8', method='html').decode(encoding='UTF-8')
+
 def handle_article(a):
 	global db
 	id = a.attrib['id']
@@ -42,14 +45,14 @@ def handle_article(a):
 			row['ref'] = e.text
 			row['ref_url'] = e.attrib['to'].strip()
 			e.tag = 'a'
-			e.attrib['href'] = '/online/lg' + e.attrib['to']
+			e.attrib['href'] = 'https://learngreenlandic.com/online/lg' + e.attrib['to']
 			e.attrib.pop('to')
 			if e.attrib['href'].endswith('#'):
 				e.attrib['href'] += id.lower()
 		elif e.tag == 'p':
-			row['short'] += etree.tostring(e, encoding='UTF-8', method='html').decode(encoding='UTF-8')
+			row['short'] += to_html(e)
 		elif e.tag == 'expand':
-			row['long'] += re.sub(r'</?expand>\n*', '', etree.tostring(e, encoding='UTF-8', method='html').decode(encoding='UTF-8'))
+			row['long'] += re.sub(r'</?expand>\n*', '', to_html(e))
 	db.execute("INSERT INTO articles (a_title, a_ref, a_ref_url, a_short, a_long) VALUES (:title, :ref, :ref_url, :short, :long)", row)
 	return db.lastrowid
 
@@ -77,9 +80,21 @@ def handle_chapter(ch):
 <html>
 <head>
 	<meta charset="UTF-8">
+	<meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no">
 	<title>{title}</title>
+
+	<link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap-icons@1.11/font/bootstrap-icons.css">
+	<link rel="stylesheet" href="https://learngreenlandic.com/online/static/bootswatch.darkly.css">
+
+	<script src="https://cdn.jsdelivr.net/npm/jquery@3.7/dist/jquery.min.js"></script>
+	<script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3/dist/js/bootstrap.bundle.min.js"></script>
+
+	<link href="https://fonts.googleapis.com/css?family=Noto+Sans&display=swap" rel="stylesheet">
+	<link href="https://learngreenlandic.com/online/static/lg.css" rel="stylesheet">
+	<script src="https://learngreenlandic.com/online/static/lg.js"></script>
 </head>
-<body>
+<body data-theme="darkly">
+<div class="container">
 '''
 		for e in elems:
 			if e.tag == 'article':
@@ -90,8 +105,9 @@ def handle_chapter(ch):
 					if not len(a):
 						continue
 					db.execute(f"INSERT INTO lookups (l_id, l_{lang}) VALUES (?, ?) ON CONFLICT DO UPDATE SET l_{lang} = ?", [a, id, id])
-			html += re.sub(r'</?expand>\n*', '', etree.tostring(e, encoding='UTF-8', method='html').decode(encoding='UTF-8'))
-		html += '''</body>
+			html += re.sub(r'</?expand>\n*', '', to_html(e))
+		html += '''</div>
+</body>
 </html>
 '''
 		Path('index.html').write_text(html)
