@@ -34,6 +34,20 @@ def handle_article(a):
 		'short': '',
 		'long': '',
 	}
+
+	# Ensure tags are in a certain order
+	na = []
+	for e in a:
+		if e.tag == 'h1':
+			na.append(e)
+	for e in a:
+		if e.tag == 'ref':
+			na.append(e)
+	for e in a:
+		if e.tag != 'h1' and e.tag != 'ref':
+			na.append(e)
+	a[:] = na
+
 	for e in a:
 		if e.tag == 'h1':
 			pe = copy.deepcopy(e)
@@ -89,7 +103,7 @@ def handle_chapter(ch):
 	<script src="https://cdn.jsdelivr.net/npm/jquery@3.7/dist/jquery.min.js"></script>
 	<script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3/dist/js/bootstrap.bundle.min.js"></script>
 
-	<link href="https://fonts.googleapis.com/css?family=Noto+Sans&display=swap" rel="stylesheet">
+	<link href="https://fonts.bunny.net/css?family=Noto+Sans&display=swap" rel="stylesheet">
 	<link href="https://learngreenlandic.com/online/static/lg.css" rel="stylesheet">
 	<script src="https://learngreenlandic.com/online/static/lg.js"></script>
 </head>
@@ -114,20 +128,27 @@ def handle_chapter(ch):
 	os.chdir('..')
 	return [name, title]
 
+def handle_include(fn):
+	p = Path(fn).absolute()
+	os.chdir(p.parent)
+	html = p.read_text()
+	if ms := re.findall(r'(<include file="([^"]+)"\s*/>)', html):
+		for m in ms:
+			inc = ''
+			files = glob.glob(m[1])
+			for file in files:
+				inc += handle_include(file)
+				os.chdir(p.parent)
+			html = html.replace(m[0], inc)
+	return html
+
 for lang in ['dan', 'eng', 'kal']:
 	os.chdir(dir)
 	if not os.path.exists(f'{lang}/_docs.html'):
 		continue
 
 	os.chdir(lang)
-	html = Path(f'_docs.html').read_text()
-	if ms := re.findall(r'(<include file="([^"]+)"\s*/>)', html):
-		for m in ms:
-			inc = ''
-			files = glob.glob(m[1])
-			for file in files:
-				inc += Path(file).read_text()
-			html = html.replace(m[0], inc)
+	html = handle_include('_docs.html')
 
 	fns = re.findall(r'<lg-fn-def n="([^"]+)">(.*?)</lg-fn-def>', html)
 	for fn in fns:
