@@ -21,11 +21,31 @@ subprocess.run(['sqlite3', 'build/docs.sqlite', '-init', '_src/schema.sql'], inp
 con = sqlite3.connect('build/docs.sqlite')
 db = con.cursor()
 
+g = {
+	'db': db,
+	'lang': '',
+	'l10n': {},
+	}
+
+def tr(str):
+	global g
+	if not str in g['l10n']:
+		return str
+	return g['l10n'][str]
+
+def esc_html(str):
+	str = re.sub(r'&', '&amp;', str)
+	str = re.sub(r'<', '&lt;', str)
+	str = re.sub(r'>', '&gt;', str)
+	str = re.sub(r'"', '&quot;', str)
+	str = re.sub(r"'", '&apos;', str)
+	return str
+
 def to_html(e):
 	return etree.tostring(e, encoding='UTF-8', method='html').decode(encoding='UTF-8')
 
 def handle_article(a):
-	global db
+	global g
 	id = a.attrib['id']
 	row = {
 		'title': id,
@@ -67,23 +87,34 @@ def handle_article(a):
 			row['short'] += to_html(e)
 		elif e.tag == 'expand':
 			row['long'] += re.sub(r'</?expand>\n*', '', to_html(e))
-	db.execute("INSERT INTO articles (a_title, a_ref, a_ref_url, a_short, a_long) VALUES (:title, :ref, :ref_url, :short, :long)", row)
-	return db.lastrowid
+	g['db'].execute("INSERT INTO articles (a_title, a_ref, a_ref_url, a_short, a_long) VALUES (:title, :ref, :ref_url, :short, :long)", row)
+	return g['db'].lastrowid
 
 def handle_chapter(ch):
-	global lang, db
+	global g
 	name = title = ch.attrib['name']
 	os.makedirs(title, exist_ok=True)
 	os.chdir(title)
 
+	has_toc = False
+
 	elems = []
+	for e in ch:
+		if e.tag == 'toc':
+			has_toc = True
+	for e in ch:
+		if e.tag == 'h1' and not has_toc:
+			toc = e.makeelement('toc')
+			e.addnext(toc)
+			has_toc = True
+
 	for e in ch:
 		if e.tag == 'chapter':
 			nest = handle_chapter(e)
-			a = etree.Element('a', href=nest[0]+'/')
+			a = e.makeelement('a', href=nest[0]+'/')
 			a.text = nest[1]
 			elems.append(a)
-			elems.append(etree.Element('br'))
+			elems.append(e.makeelement('br'))
 			continue
 		elif e.tag == 'h1':
 			title = e.text
@@ -118,7 +149,59 @@ def handle_chapter(ch):
 					a = a.strip()
 					if not len(a):
 						continue
-					db.execute(f"INSERT INTO lookups (l_id, l_{lang}) VALUES (?, ?) ON CONFLICT DO UPDATE SET l_{lang} = ?", [a, id, id])
+					g['db'].execute(f"INSERT INTO lookups (l_id, l_{g['lang']}) VALUES (?, ?) ON CONFLICT DO UPDATE SET l_{g['lang']} = ?", [a, id, id])
+
+		toc = []
+		for e in elems:
+			if e.tag == 'toc':
+				c = e
+				while c.tag != 'chapter':
+					c = c.getparent()
+
+				seen_toc = False
+				for h in c.iterdescendants(['h1', 'h2', 'h3', 'h4', 'h5', 'h6', 'toc']):
+					if h.tag == 'toc':
+						seen_toc = True
+						continue
+					if not seen_toc:
+						continue
+
+					if not 'id' in h.attrib:
+						h.attrib['id'] = '_' + h.tag + '_' + str(len(toc))
+					nh = copy.deepcopy(h)
+
+					fns = h.findall('lg-fn')
+					for fn in fns:
+						h.remove(fn)
+					id = h.attrib['id']
+					if h.getparent().tag == 'article':
+						id = h.getparent().attrib['id']
+					toc.append([str(etree.tostring(h, encoding='UTF-8', method='text'), encoding='UTF-8').strip(), h.tag, id])
+
+					h.clear()
+					h.attrib['class'] = 'lg-heading lg-heading-' + h.tag
+					h.tag = 'div'
+					h.append(nh)
+					nh = h.makeelement('a')
+					nh.attrib['class'] = 'lg-heading-toc'
+					nh.attrib['href'] = '#_toc'
+					nh.text = '^'
+					h.append(nh)
+
+				e.tag = 'nav'
+				e.attrib['id'] = '_toc'
+				ul = e.makeelement('ul')
+				ul.attrib['class'] = 'lg-toc'
+				e.append(ul)
+				for t in toc:
+					li = ul.makeelement('li')
+					li.attrib['class'] = 'lg-toc-' + t[1]
+					a = li.makeelement('a')
+					a.text = t[0]
+					a.attrib['href'] = '#' + t[2]
+					li.append(a)
+					ul.append(li)
+
 			html += re.sub(r'</?expand>\n*', '', to_html(e))
 		html += '''</div>
 </body>
@@ -147,7 +230,17 @@ for lang in ['dan', 'eng', 'kal']:
 	if not os.path.exists(f'{lang}/_docs.html'):
 		continue
 
+	g['lang'] = lang
+
 	os.chdir(lang)
+	if os.path.exists('l10n.tsv'):
+		tsv = Path('l10n.tsv').read_text().strip().splitlines()
+		for t in tsv:
+			t = re.sub(r'#.*', '', t).strip()
+			if t == '':
+				continue
+			t = t.split('\t')
+			g['l10n'][t[0].strip()] = t[1].strip()
 	html = handle_include('_docs.html')
 
 	fns = re.findall(r'<lg-fn-def n="([^"]+)">(.*?)</lg-fn-def>', html)
@@ -163,8 +256,65 @@ for lang in ['dan', 'eng', 'kal']:
 	os.makedirs(f'build/{lang}', exist_ok=True)
 
 	body = dom.find('body')
+
+	index = []
+	for h in body.iterdescendants(['h1', 'h2', 'h3', 'h4', 'h5', 'h6']):
+		index.append(h)
+		if not 'id' in h.attrib:
+			h.attrib['id'] = '_' + h.tag + '_' + str(len(index))
+		p = []
+		for c in h.iterancestors('chapter'):
+			p.append(c.attrib['name'])
+		p.reverse()
+		h.attrib['data-path'] = '/'.join(p)
+
+	index = []
+	for h in body.iterdescendants(['h1', 'h2', 'h3', 'h4', 'h5', 'h6']):
+		id = h.attrib['id']
+		for c in h.iterancestors('article'):
+			id = c.attrib['id']
+			break
+		index.append([str(etree.tostring(h, encoding='UTF-8', method='text'), encoding='UTF-8').strip(), h.attrib['data-path'], id])
+		del(h.attrib['data-path'])
+	index.sort(key=lambda x: x[0])
+
 	for ch in body.iterchildren('chapter'):
 		os.chdir(dir + f'/build/{lang}')
 		handle_chapter(ch)
+
+	title = tr('HDR_INDEX')
+	html = f'''<!DOCTYPE html>
+<html>
+<head>
+	<meta charset="UTF-8">
+	<meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no">
+	<title>{title}</title>
+
+	<link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap-icons@1.11/font/bootstrap-icons.css">
+	<link rel="stylesheet" href="https://learngreenlandic.com/online/static/bootswatch.darkly.css">
+
+	<script src="https://cdn.jsdelivr.net/npm/jquery@3.7/dist/jquery.min.js"></script>
+	<script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3/dist/js/bootstrap.bundle.min.js"></script>
+
+	<link href="https://fonts.bunny.net/css?family=Noto+Sans&display=swap" rel="stylesheet">
+	<link href="https://learngreenlandic.com/online/static/lg.css" rel="stylesheet">
+	<script src="https://learngreenlandic.com/online/static/lg.js"></script>
+</head>
+<body data-theme="darkly">
+<div class="container">
+<h1>{title}</h1>
+'''
+	last = ''
+	for i in index:
+		if last != i[0][0]:
+			last = i[0][0]
+			html += '<hr>\n'
+			html += f'<h2>{last}</h2>\n'
+		html += '<a href="./' + esc_html(i[1]) + '/#' + esc_html(i[2]) + '">' + esc_html(i[0]) + '</a><br>\n'
+	html += '''</div>
+</body>
+</html>
+'''
+	Path('_index.html').write_text(html)
 
 con.commit()
