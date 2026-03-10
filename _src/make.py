@@ -128,7 +128,7 @@ def handle_chapter(ch):
 	<meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no">
 	<title>{title}</title>
 
-	<link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap-icons@1.11/font/bootstrap-icons.css">
+	<link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap-icons@1.13/font/bootstrap-icons.css">
 	<link rel="stylesheet" href="https://learngreenlandic.com/online/static/bootswatch.darkly.css">
 
 	<script src="https://cdn.jsdelivr.net/npm/jquery@3.7/dist/jquery.min.js"></script>
@@ -268,6 +268,12 @@ for lang in ['dan', 'eng', 'kal']:
 		p.reverse()
 		h.attrib['data-path'] = '/'.join(p)
 
+	front = []
+	for c in body.iterdescendants('chapter'):
+		for h in c.iterdescendants(['h1', 'h2', 'h3', 'h4', 'h5', 'h6']):
+			front.append([str(etree.tostring(h, encoding='UTF-8', method='text'), encoding='UTF-8').strip(), h.attrib['data-path']])
+			break
+
 	index = []
 	for h in body.iterdescendants(['h1', 'h2', 'h3', 'h4', 'h5', 'h6']):
 		id = h.attrib['id']
@@ -282,6 +288,42 @@ for lang in ['dan', 'eng', 'kal']:
 		os.chdir(dir + f'/build/{lang}')
 		handle_chapter(ch)
 
+	title = tr('HDR_TOC')
+	html = f'''<!DOCTYPE html>
+<html>
+<head>
+	<meta charset="UTF-8">
+	<meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no">
+	<title>{title}</title>
+
+	<link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap-icons@1.13/font/bootstrap-icons.css">
+	<link rel="stylesheet" href="https://learngreenlandic.com/online/static/bootswatch.darkly.css">
+
+	<script src="https://cdn.jsdelivr.net/npm/jquery@3.7/dist/jquery.min.js"></script>
+	<script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3/dist/js/bootstrap.bundle.min.js"></script>
+
+	<link href="https://fonts.bunny.net/css?family=Noto+Sans&display=swap" rel="stylesheet">
+	<link href="https://learngreenlandic.com/online/static/lg.css" rel="stylesheet">
+	<script src="https://learngreenlandic.com/online/static/lg.js"></script>
+</head>
+<body data-theme="darkly">
+<div class="container">
+<h1>{title}</h1>
+'''
+	for i in front:
+		cl = ''
+		if '/' in i[1]:
+			cl = ' class="ps-4"'
+		if i[1].count('/') > 1:
+			cl = ' class="ps-5"'
+		html += f'<a{cl} href="./' + esc_html(i[1]) + '/">' + esc_html(i[0]) + '</a> … <small>' + esc_html(i[1]) + '</small><br>\n'
+	title = tr('HDR_INDEX')
+	html += f'''<br><a href="_index.html">{title}</a></div>
+</body>
+</html>
+'''
+	Path('index.html').write_text(html)
+
 	title = tr('HDR_INDEX')
 	html = f'''<!DOCTYPE html>
 <html>
@@ -290,7 +332,7 @@ for lang in ['dan', 'eng', 'kal']:
 	<meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no">
 	<title>{title}</title>
 
-	<link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap-icons@1.11/font/bootstrap-icons.css">
+	<link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap-icons@1.13/font/bootstrap-icons.css">
 	<link rel="stylesheet" href="https://learngreenlandic.com/online/static/bootswatch.darkly.css">
 
 	<script src="https://cdn.jsdelivr.net/npm/jquery@3.7/dist/jquery.min.js"></script>
@@ -310,7 +352,7 @@ for lang in ['dan', 'eng', 'kal']:
 			last = i[0][0]
 			html += '<hr>\n'
 			html += f'<h2>{last}</h2>\n'
-		html += '<a href="./' + esc_html(i[1]) + '/#' + esc_html(i[2]) + '">' + esc_html(i[0]) + '</a><br>\n'
+		html += '<a href="./' + esc_html(i[1]) + '/#' + esc_html(i[2]) + '">' + esc_html(i[0]) + '</a> … <small>' + esc_html(i[1]) + '</small><br>\n'
 	html += '''</div>
 </body>
 </html>
